@@ -73,25 +73,13 @@ The application utilizes a local database implemented with **SQLite**.
 
 ---
 
-## 🚀 How to Run
-
-1. Clone the repository to your local machine.
-```bash
-   git clone https://github.com/your-username/renta.git
-   cd renta
-```
-2. Open the project in **IntelliJ IDEA**.
-   - File → Open → select the `Renta` folder
-3. Configure JavaFX
-   - Go to File → Project Structure → Libraries
-   - Add the JavaFX SDK `lib` folder
-4. Add VM options for JavaFX
-   - Go to Run → Edit Configurations
-   - Add the following to VM options:
---module-path /path/to/javafx-sdk/lib --add-modules javafx.controls,javafx.fxml
-5. Let Maven sync and download dependencies automatically.
-6. Run `App.java`.
-
+**How to Run (IntelliJ IDEA)**
+1. Open the project in IntelliJ
+2. Right‑click `pom.xml` → **Add as Maven Project**
+3. Open the **Maven tab** (on the right side of IntelliJ)
+4. Expand **Plugins → javafx → javafx:run**
+5. Double‑click `javafx:run` to launch the app
+   
 ---
 
 ## 🧠 Project Purpose
