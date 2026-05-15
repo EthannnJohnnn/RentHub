@@ -19,8 +19,6 @@ public class MainApp extends Application {
         primaryStage.setMinWidth(800);
         primaryStage.setMinHeight(600);
 
-        // Start at login screen once Person B finishes Login.fxml
-        // For now just show a placeholder
         switchTo("views/Login.fxml");
         primaryStage.show();
     }
