@@ -65,11 +65,12 @@ The application utilizes a local database implemented with **SQLite**.
 
 ## 👥 Team
 
-| Role | Responsibilities |
-|---|---|
-| Backend & Database | Models, DAOs, DatabaseHelper, schema.sql, seed.sql |
-| Frontend & UI | FXML views, CSS styling, SceneBuilder layouts |
-| Feature Logic & Integration | Controllers, SessionManager, App.java, business logic |
+| Role | Responsibilities | GitHub |
+|---|---|---|
+| Backend & Database | Models, DAOs, DatabaseHelper, schema.sql, seed.sql | [backend-dev](https://github.com/EthannnJohnnn) |
+| Frontend & UI | FXML views, CSS styling, SceneBuilder layouts | [frontend-dev](https://github.com/Cayl-06) |
+| Feature Logic & Integration | Controllers, SessionManager, App.java, business logic | [feature-dev](https://github.com/chrkk) |
+
 
 ---
 
