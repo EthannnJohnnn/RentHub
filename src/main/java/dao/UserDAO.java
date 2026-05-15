@@ -36,7 +36,7 @@ public class UserDAO {
 
     // --- REGISTER METHOD ---
     public boolean register(User user) {
-        String sql = "INSERT INTO users (username, password, role) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO users (username, password, role) VALUES (?, ?, ?)"; // No id (Auto Increment)
 
         try (Connection conn = DatabaseHelper.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
