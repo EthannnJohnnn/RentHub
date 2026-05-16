@@ -36,5 +36,25 @@ public class TenantDashboardController {
         searchField.textProperty().addListener((obs, oldVal, newVal) -> handleSearch(newVal));
     }
 
+    private void handleSearch(String keyword) {
+        List<Property> filtered = allProperties.stream()
+                .filter(p -> p.getName().toLowerCase().contains(keyword.toLowerCase())
+                        || p.getAddress().toLowerCase().contains(keyword.toLowerCase()))
+                .collect(Collectors.toList());
+        populateList(filtered);
+    }
+
+    private void populateList(List<Property> properties) {
+        ObservableList<String> items = FXCollections.observableArrayList();
+        for (Property p : properties) {
+            items.add(p.getName() + " — " + p.getAddress());
+        }
+        propertyListView.setItems(items);
+    }
+
+    @FXML
+    public void handleLogout() {
+        SessionManager.getInstance().logout();
+        MainApp.switchTo("views/Login.fxml");
     }
 }
