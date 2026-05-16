@@ -19,10 +19,15 @@ public class MainApp extends Application {
         primaryStage.setMinWidth(800);
         primaryStage.setMinHeight(600);
 
+        // --- BACKEND LOGIC: Initialize the SQLite database before the UI loads ---
+        dao.DatabaseHelper.initializeDatabase();
+
+        // --- FRONTEND LOGIC: Load the Login screen ---
         switchTo("views/Login.fxml");
         primaryStage.show();
     }
 
+    // A helper method the UI team wrote to easily swap between screens
     public static void switchTo(String fxmlPath) {
         try {
             FXMLLoader loader = new FXMLLoader(
