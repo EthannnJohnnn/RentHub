@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllers.RegisterController"
+      alignment="CENTER" spacing="16"
+      styleClass="form-container"
+      stylesheets="@../styles/styles.css">
+
+    <padding><Insets top="50" right="80" bottom="50" left="80"/></padding>
+
+    <Label text="Create Account" styleClass="app-title"/>
+
+    <TextField fx:id="usernameField" promptText="Username" styleClass="input-field" maxWidth="320"/>
+    <PasswordField fx:id="passwordField" promptText="Password" styleClass="input-field" maxWidth="320"/>
+    <PasswordField fx:id="confirmPasswordField" promptText="Confirm Password" styleClass="input-field" maxWidth="320"/>
+
+    <ComboBox fx:id="roleComboBox" promptText="I am a..." maxWidth="320" styleClass="input-field">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="TENANT"/>
+                <String fx:value="LANDLORD"/>
+            </FXCollections>
+        </items>
+    </ComboBox>
+
+    <Label fx:id="errorLabel" styleClass="error-label" text="" wrapText="true" maxWidth="320"/>
+
+    <Button text="Register" onAction="#handleRegister" styleClass="primary-button" maxWidth="320"/>
+    <Hyperlink text="Already have an account? Login" onAction="#goToLogin"/>
+</VBox>
