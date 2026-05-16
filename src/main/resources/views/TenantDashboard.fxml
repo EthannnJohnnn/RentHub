@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.TenantDashboardController"
+            stylesheets="@../styles/styles.css">
+
+    <!-- TOP NAV -->
+    <top>
+        <HBox styleClass="navbar" alignment="CENTER_RIGHT" spacing="12">
+            <padding><Insets top="12" right="20" bottom="12" left="20"/></padding>
+            <Label fx:id="welcomeLabel" text="Welcome, Tenant" styleClass="nav-title" HBox.hgrow="ALWAYS"/>
+            <Button text="Logout" onAction="#handleLogout" styleClass="danger-button"/>
+        </HBox>
+    </top>
+
+    <!-- MAIN CONTENT — placeholder until @alalim wires in property browsing -->
+    <center>
+        <VBox alignment="CENTER" spacing="16">
+            <padding><Insets top="40" right="40" bottom="40" left="40"/></padding>
+            <Label text="Browse Properties" styleClass="section-title"/>
+            <TextField fx:id="searchField" promptText="Search listings..." maxWidth="400" styleClass="input-field"/>
+            <ListView fx:id="propertyListView" prefHeight="380" prefWidth="600" styleClass="list-view"/>
+        </VBox>
+    </center>
+</BorderPane>
