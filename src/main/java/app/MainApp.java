@@ -1,39 +1,49 @@
 package app;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-/**
- * Renta application entry point.
- * Day 1 goal: window opens. Nothing else matters yet.
- */
+import java.io.IOException;
+
 public class MainApp extends Application {
+
+    private static Stage primaryStage;
 
     @Override
     public void start(Stage stage) {
+        primaryStage = stage;
+        primaryStage.setTitle("Renta");
+        primaryStage.setMinWidth(800);
+        primaryStage.setMinHeight(600);
 
-        Label title = new Label("Renta");
-        title.setStyle("-fx-font-size: 28px; -fx-font-weight: bold;");
+        // --- BACKEND LOGIC: Initialize the SQLite database before the UI loads ---
+        dao.DatabaseHelper.initializeDatabase();
 
-        Label status = new Label("Not logged in");
+        // --- FRONTEND LOGIC: Load the Login screen ---
+        switchTo("views/Login.fxml");
+        primaryStage.show();
+    }
 
-        Button loginBtn = new Button("Login (placeholder)");
-        loginBtn.setOnAction(e -> status.setText("Login coming soon..."));
+    // A helper method the UI team wrote to easily swap between screens
+    public static void switchTo(String fxmlPath) {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    MainApp.class.getResource("/" + fxmlPath)
+            );
+            Parent root = loader.load();
+            Scene scene = new Scene(root, 800, 600);
+            primaryStage.setScene(scene);
+        } catch (IOException e) {
+            System.err.println("Could not load: " + fxmlPath);
+            e.printStackTrace();
+        }
+    }
 
-        VBox root = new VBox(20, title, loginBtn, status);
-        root.setStyle("-fx-alignment: center; -fx-padding: 40px;");
-
-        Scene scene = new Scene(root, 800, 500);
-
-        stage.setTitle("Renta");
-        stage.setScene(scene);
-        stage.setMinWidth(600);
-        stage.setMinHeight(400);
-        stage.show();
+    public static Stage getStage() {
+        return primaryStage;
     }
 
     public static void main(String[] args) {
