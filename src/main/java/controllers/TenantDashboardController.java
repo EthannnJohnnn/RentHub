@@ -11,15 +11,17 @@ import javafx.scene.control.TextField;
 import models.Property;
 import models.User;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class TenantDashboardController {
 
-    @FXML
-    public void handleLogout() {
-        SessionManager.getInstance().logout();
-        MainApp.switchTo("views/Login.fxml");
-    }
-
     @FXML private Label welcomeLabel;
+    @FXML private ListView<String> propertyListView;
+    @FXML private TextField searchField;
+
+    private final PropertyDAO propertyDAO = new PropertyDAO();
+    private List<Property> allProperties;
 
     @FXML
     public void initialize() {
@@ -27,5 +29,12 @@ public class TenantDashboardController {
         if (user != null) {
             welcomeLabel.setText("Welcome, " + user.getUsername());
         }
-}
+
+        allProperties = propertyDAO.getAllProperties();
+        populateList(allProperties);
+
+        searchField.textProperty().addListener((obs, oldVal, newVal) -> handleSearch(newVal));
+    }
+
+    }
 }
