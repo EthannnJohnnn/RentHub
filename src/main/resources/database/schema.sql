@@ -1,4 +1,3 @@
--- 1. Users Table (Stores both Tenants and Landlords)
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT UNIQUE NOT NULL,
@@ -6,7 +5,6 @@ CREATE TABLE IF NOT EXISTS users (
     role TEXT NOT NULL
 );
 
--- 2. Properties Table (Belongs to a Landlord)
 CREATE TABLE IF NOT EXISTS properties (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     landlord_id INTEGER NOT NULL,
@@ -16,7 +14,6 @@ CREATE TABLE IF NOT EXISTS properties (
     FOREIGN KEY (landlord_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
--- 3. Rooms Table (Belongs to a Property)
 CREATE TABLE IF NOT EXISTS rooms (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     property_id INTEGER NOT NULL,
@@ -27,18 +24,16 @@ CREATE TABLE IF NOT EXISTS rooms (
     FOREIGN KEY (property_id) REFERENCES properties(id) ON DELETE CASCADE
 );
 
--- 4. Bookings Table (Links a Tenant to a Room)
 CREATE TABLE IF NOT EXISTS bookings (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     tenant_id INTEGER NOT NULL,
     room_id INTEGER NOT NULL,
-    status TEXT DEFAULT 'PENDING', -- PENDING, APPROVED, REJECTED
+    status TEXT DEFAULT 'PENDING',
     booking_date TEXT DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (tenant_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (room_id) REFERENCES rooms(id) ON DELETE CASCADE
 );
 
--- 5. Reviews Table (Links a Tenant to a Property)
 CREATE TABLE IF NOT EXISTS reviews (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     property_id INTEGER NOT NULL,
