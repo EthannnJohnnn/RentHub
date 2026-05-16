@@ -10,4 +10,9 @@ public class LandlordDashboardController {
         SessionManager.getInstance().logout();
         MainApp.switchTo("views/Login.fxml");
     }
+
+    @FXML
+    public void handleAddProperty() {
+        MainApp.switchTo("views/AddEditProperty.fxml");
+    }
 }
