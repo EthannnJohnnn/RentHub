@@ -35,7 +35,7 @@ public class LoginController {
 
         SessionManager.getInstance().setCurrentUser(user);
 
-        if ("landlord".equals(user.getRole())) {
+        if ("LANDLORD".equals(user.getRole())) {
             MainApp.switchTo("views/LandlordDashboard.fxml");
         } else {
             MainApp.switchTo("views/TenantDashboard.fxml");
