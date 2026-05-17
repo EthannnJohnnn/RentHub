@@ -55,6 +55,16 @@ public class PropertyDetailController {
         ratingComboBox.setItems(FXCollections.observableArrayList(1, 2, 3, 4, 5));
     }
 
+    private void loadReviews() {
+        ReviewDAO reviewDAO = new ReviewDAO();
+        List<Review> reviews = reviewDAO.getReviewsByPropertyId(currentProperty.getId());
+        ObservableList<String> items = FXCollections.observableArrayList();
+        for (Review r : reviews) {
+            items.add("⭐ " + r.getRating() + "/5 — " + r.getComment());
+        }
+        reviewsListView.setItems(items);
+    }
+
     private void loadRooms() {
         roomNumberColumn.setCellValueFactory(data ->
                 new SimpleStringProperty(data.getValue().getRoomNumber()));
