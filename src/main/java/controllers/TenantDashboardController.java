@@ -66,7 +66,7 @@ public class TenantDashboardController {
     public void handlePropertyClick() {
         int index = propertyListView.getSelectionModel().getSelectedIndex();
         if (index >= 0) {
-            Property selected = allProperties.get(index);
+            Property selected = filteredProperties.get(index);
             try {
                 FXMLLoader loader = new FXMLLoader(
                         MainApp.class.getResource("/views/PropertyDetail.fxml"));
