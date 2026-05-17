@@ -6,24 +6,51 @@
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="controllers.TenantDashboardController"
+            styleClass="page-container"
             stylesheets="@../styles/styles.css">
 
     <!-- TOP NAV -->
     <top>
-        <HBox styleClass="navbar" alignment="CENTER_RIGHT" spacing="12">
-            <padding><Insets top="12" right="20" bottom="12" left="20"/></padding>
-            <Label fx:id="welcomeLabel" text="Welcome, Tenant" styleClass="nav-title" HBox.hgrow="ALWAYS"/>
+        <HBox styleClass="navbar" alignment="CENTER_LEFT" spacing="12">
+            <padding><Insets top="14" right="24" bottom="14" left="24"/></padding>
+            <Label text="Renta" styleClass="nav-brand"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label fx:id="welcomeLabel" text="Welcome, Tenant" styleClass="nav-title"/>
             <Button text="Logout" onAction="#handleLogout" styleClass="danger-button"/>
         </HBox>
     </top>
 
-    <!-- MAIN CONTENT — placeholder until @alalim wires in property browsing -->
+    <!-- MAIN CONTENT -->
     <center>
-        <VBox alignment="CENTER" spacing="16">
-            <padding><Insets top="40" right="40" bottom="40" left="40"/></padding>
-            <Label text="Browse Properties" styleClass="section-title"/>
-            <TextField fx:id="searchField" promptText="Search listings..." maxWidth="400" styleClass="input-field"/>
-            <ListView fx:id="propertyListView" prefHeight="380" prefWidth="600" styleClass="list-view"/>
+        <VBox spacing="24">
+            <padding><Insets top="32" right="40" bottom="32" left="40"/></padding>
+
+            <!-- Header Row -->
+            <HBox alignment="CENTER_LEFT" spacing="16">
+                <VBox spacing="4" HBox.hgrow="ALWAYS">
+                    <Label text="Tenant Dashboard" styleClass="screen-title"/>
+                    <Label text="Search and browse available properties below."
+                           styleClass="subtitle"/>
+                </VBox>
+                <!-- THE MISSING BUTTON -->
+                <Button text="Browse All Properties"
+                        onAction="#handleBrowseProperties"
+                        styleClass="primary-button"/>
+            </HBox>
+
+            <!-- Quick Search Card -->
+            <VBox styleClass="card" spacing="16">
+                <Label text="QUICK SEARCH" styleClass="label-text"/>
+                <TextField fx:id="searchField"
+                           promptText="Search by property name or address..."
+                           styleClass="input-field"
+                           maxWidth="Infinity"/>
+                <ListView fx:id="propertyListView"
+                          prefHeight="300"
+                          styleClass="list-view"/>
+            </VBox>
+
         </VBox>
     </center>
+
 </BorderPane>

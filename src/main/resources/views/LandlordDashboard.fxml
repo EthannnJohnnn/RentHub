@@ -6,24 +6,50 @@
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="controllers.LandlordDashboardController"
+            styleClass="page-container"
             stylesheets="@../styles/styles.css">
 
     <!-- TOP NAV -->
     <top>
-        <HBox styleClass="navbar" alignment="CENTER_RIGHT" spacing="12">
-            <padding><Insets top="12" right="20" bottom="12" left="20"/></padding>
-            <Label fx:id="welcomeLabel" text="Welcome, Landlord" styleClass="nav-title" HBox.hgrow="ALWAYS"/>
-            <Button text="+ Add Property" onAction="#handleAddProperty" styleClass="primary-button"/>
+        <HBox styleClass="navbar" alignment="CENTER_LEFT" spacing="12">
+            <padding><Insets top="14" right="24" bottom="14" left="24"/></padding>
+            <Label text="Renta" styleClass="nav-brand"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label fx:id="welcomeLabel" text="Welcome, Landlord" styleClass="nav-title"/>
             <Button text="Logout" onAction="#handleLogout" styleClass="danger-button"/>
         </HBox>
     </top>
 
-    <!-- MAIN CONTENT — placeholder until @alalim wires in listing management -->
+    <!-- MAIN CONTENT -->
     <center>
-        <VBox alignment="CENTER" spacing="16">
-            <padding><Insets top="40" right="40" bottom="40" left="40"/></padding>
-            <Label text="My Listings" styleClass="section-title"/>
-            <ListView fx:id="listingsView" prefHeight="400" prefWidth="640" styleClass="list-view"/>
+        <VBox spacing="24">
+            <padding><Insets top="32" right="40" bottom="32" left="40"/></padding>
+
+            <!-- Header Row -->
+            <HBox alignment="CENTER_LEFT" spacing="16">
+                <VBox spacing="4" HBox.hgrow="ALWAYS">
+                    <Label text="Landlord Dashboard" styleClass="screen-title"/>
+                    <Label text="Manage your property listings and track bookings."
+                           styleClass="subtitle"/>
+                </VBox>
+                <!-- THE MISSING BUTTON -->
+                <Button text="Manage Listings"
+                        onAction="#handleManageListings"
+                        styleClass="primary-button"/>
+                <Button text="+ Add Property"
+                        onAction="#handleAddProperty"
+                        styleClass="secondary-button"/>
+            </HBox>
+
+            <!-- My Listings Preview Card -->
+            <VBox styleClass="card" spacing="16">
+                <Label text="MY LISTINGS PREVIEW" styleClass="label-text"/>
+                <ListView fx:id="listingsView"
+                          prefHeight="300"
+                          styleClass="list-view"/>
+            </VBox>
+
         </VBox>
     </center>
+
 </BorderPane>
