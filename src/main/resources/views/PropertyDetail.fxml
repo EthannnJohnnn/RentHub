@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.PropertyDetailController"
+            styleClass="page-container"
+            stylesheets="@../styles/styles.css">
+
+    <!-- TOP NAV -->
+    <top>
+        <HBox styleClass="navbar" alignment="CENTER_LEFT" spacing="16">
+            <padding><Insets top="14" right="24" bottom="14" left="24"/></padding>
+            <Label text="Renta" styleClass="nav-brand"/>
+            <Label text="|" styleClass="nav-title" opacity="0.3"/>
+            <Label fx:id="navPropertyName" text="Property Detail" styleClass="nav-title"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="← Back to Listings" onAction="#handleBack" styleClass="secondary-button"/>
+            <Button text="Logout" onAction="#handleLogout" styleClass="danger-button"/>
+        </HBox>
+    </top>
+
+    <!-- MAIN CONTENT -->
+    <center>
+        <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+            <VBox spacing="24">
+                <padding><Insets top="32" right="40" bottom="40" left="40"/></padding>
+
+                <!-- Property Info Card -->
+                <VBox styleClass="card" spacing="16">
+                    <Label fx:id="propertyNameLabel" text="Property Name"
+                           styleClass="screen-title"/>
+                    <HBox spacing="32">
+                        <VBox spacing="4">
+                            <Label text="ADDRESS" styleClass="label-text"/>
+                            <Label fx:id="propertyAddressLabel" text="—"
+                                   styleClass="detail-value"/>
+                        </VBox>
+                    </HBox>
+                    <VBox spacing="4">
+                        <Label text="DESCRIPTION" styleClass="label-text"/>
+                        <Label fx:id="propertyDescriptionLabel" text="—"
+                               styleClass="detail-label" wrapText="true"/>
+                    </VBox>
+                </VBox>
+
+                <!-- Rooms Section -->
+                <VBox spacing="14">
+                    <HBox alignment="CENTER_LEFT" spacing="16">
+                        <Label text="Available Rooms" styleClass="section-title"
+                               HBox.hgrow="ALWAYS"/>
+                        <Button fx:id="bookButton" text="Book Selected Room"
+                                onAction="#handleBook" styleClass="primary-button"
+                                disable="true"/>
+                    </HBox>
+
+                    <TableView fx:id="roomsTable" styleClass="table-view" prefHeight="220">
+                        <columns>
+                            <TableColumn fx:id="roomNumberColumn" text="Room" prefWidth="100"/>
+                            <TableColumn fx:id="capacityColumn" text="Capacity" prefWidth="100"/>
+                            <TableColumn fx:id="priceColumn" text="Price / Month" prefWidth="140"/>
+                            <TableColumn fx:id="availableColumn" text="Status" prefWidth="120"/>
+                        </columns>
+                        <placeholder>
+                            <Label text="No rooms listed for this property." styleClass="subtitle"/>
+                        </placeholder>
+                    </TableView>
+
+                    <Label fx:id="errorLabel" text="" styleClass="error-label"/>
+                </VBox>
+
+                <!-- Reviews Section -->
+                <VBox spacing="14">
+                    <Label text="Reviews" styleClass="section-title"/>
+                    <ListView fx:id="reviewsListView" styleClass="list-view" prefHeight="180"/>
+                </VBox>
+
+                <!-- Leave a Review -->
+                <VBox styleClass="card-flat" spacing="16">
+                    <Label text="Leave a Review" styleClass="card-title"/>
+                    <HBox spacing="16" alignment="CENTER_LEFT">
+                        <VBox spacing="6">
+                            <Label text="Rating" styleClass="label-text"/>
+                            <ComboBox fx:id="ratingComboBox" promptText="Select rating"
+                                      styleClass="input-field" prefWidth="160"/>
+                        </VBox>
+                    </HBox>
+                    <VBox spacing="6">
+                        <Label text="Comment" styleClass="label-text"/>
+                        <TextArea fx:id="commentArea"
+                                  promptText="Share your experience with this property..."
+                                  styleClass="text-area-field"
+                                  prefHeight="80" wrapText="true"/>
+                    </VBox>
+                    <Label fx:id="reviewErrorLabel" text="" styleClass="error-label"/>
+                    <HBox alignment="CENTER_RIGHT">
+                        <Button text="Submit Review" onAction="#handleSubmitReview"
+                                styleClass="success-button"/>
+                    </HBox>
+                </VBox>
+
+            </VBox>
+        </ScrollPane>
+    </center>
+
+</BorderPane>
