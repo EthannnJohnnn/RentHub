@@ -106,7 +106,34 @@ public class PropertyDetailController {
 
     @FXML
     public void handleSubmitReview() {
-        reviewErrorLabel.setText("Reviews will be available once ReviewDAO is implemented.");
+        Integer rating = ratingComboBox.getValue();
+        String comment = commentArea.getText().trim();
+
+        if (rating == null || comment.isEmpty()) {
+            reviewErrorLabel.setText("Please select a rating and write a comment.");
+            return;
+        }
+
+        User tenant = SessionManager.getInstance().getCurrentUser();
+        ReviewDAO reviewDAO = new ReviewDAO();
+
+        Review review = new Review();
+        review.setPropertyId(currentProperty.getId());
+        review.setTenantId(tenant.getId());
+        review.setRating(rating);
+        review.setComment(comment);
+
+        boolean success = reviewDAO.addReview(review);
+
+        if (!success) {
+            reviewErrorLabel.setText("Failed to submit review.");
+            return;
+        }
+
+        reviewErrorLabel.setText("");
+        commentArea.clear();
+        ratingComboBox.setValue(null);
+        loadReviews();
     }
 
     @FXML
