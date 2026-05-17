@@ -25,6 +25,7 @@ public class TenantDashboardController {
 
     private final PropertyDAO propertyDAO = new PropertyDAO();
     private List<Property> allProperties;
+    private List<Property> filteredProperties;
 
     @FXML
     public void initialize() {
@@ -34,7 +35,8 @@ public class TenantDashboardController {
         }
 
         allProperties = propertyDAO.getAllProperties();
-        populateList(allProperties);
+        filteredProperties = allProperties;
+        populateList(filteredProperties);
 
         searchField.textProperty().addListener((obs, oldVal, newVal) -> handleSearch(newVal));
     }
