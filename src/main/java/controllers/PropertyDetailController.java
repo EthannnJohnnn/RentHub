@@ -13,6 +13,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import models.Property;
 import models.Room;
+import dao.ReviewDAO;
+import models.Review;
+import models.User;
 
 import java.io.IOException;
 import java.util.List;
@@ -48,9 +51,8 @@ public class PropertyDetailController {
                 property.getDescription() != null ? property.getDescription() : "No description provided.");
 
         loadRooms();
+        loadReviews();
         ratingComboBox.setItems(FXCollections.observableArrayList(1, 2, 3, 4, 5));
-        reviewsListView.setItems(FXCollections.observableArrayList(
-                "Reviews will appear here once ReviewDAO is implemented."));
     }
 
     private void loadRooms() {
