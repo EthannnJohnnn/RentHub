@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.AddEditPropertyController"
+            styleClass="page-container"
+            stylesheets="@../styles/styles.css">
+
+    <!-- TOP NAV -->
+    <top>
+        <HBox styleClass="navbar" alignment="CENTER_LEFT" spacing="16">
+            <padding><Insets top="14" right="24" bottom="14" left="24"/></padding>
+            <Label text="Renta" styleClass="nav-brand"/>
+            <Label text="|" styleClass="nav-title" opacity="0.3"/>
+            <Label fx:id="screenTitleLabel" text="Add New Property" styleClass="nav-title"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="← Back to Listings" onAction="#handleCancel" styleClass="secondary-button"/>
+        </HBox>
+    </top>
+
+    <!-- MAIN CONTENT -->
+    <center>
+        <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+            <VBox alignment="TOP_CENTER" spacing="24">
+                <padding><Insets top="40" right="200" bottom="40" left="200"/></padding>
+
+                <!-- Header -->
+                <VBox spacing="6">
+                    <Label fx:id="headerLabel" text="Add New Property" styleClass="screen-title"/>
+                    <Label text="Fill in the details below to list your property." styleClass="subtitle"/>
+                </VBox>
+
+                <!-- Form Card -->
+                <VBox styleClass="card" spacing="20">
+
+                    <!-- Property Name -->
+                    <VBox spacing="6">
+                        <Label text="Property Name *" styleClass="label-text"/>
+                        <TextField fx:id="nameField"
+                                   promptText="e.g. Sunset Boarding House"
+                                   styleClass="input-field"/>
+                    </VBox>
+
+                    <!-- Address -->
+                    <VBox spacing="6">
+                        <Label text="Address *" styleClass="label-text"/>
+                        <TextField fx:id="addressField"
+                                   promptText="e.g. 123 Main St, Labangon, Cebu"
+                                   styleClass="input-field"/>
+                    </VBox>
+
+                    <!-- Description -->
+                    <VBox spacing="6">
+                        <Label text="Description" styleClass="label-text"/>
+                        <TextArea fx:id="descriptionArea"
+                                  promptText="Describe your property — amenities, rules, nearby landmarks..."
+                                  styleClass="text-area-field"
+                                  prefHeight="100"
+                                  wrapText="true"/>
+                    </VBox>
+
+                    <!-- Error label -->
+                    <Label fx:id="errorLabel" text="" styleClass="error-label" wrapText="true"/>
+
+                    <!-- Action Buttons -->
+                    <HBox spacing="12" alignment="CENTER_RIGHT">
+                        <Button text="Cancel" onAction="#handleCancel" styleClass="secondary-button"/>
+                        <Button fx:id="submitButton" text="Add Property"
+                                onAction="#handleSubmit" styleClass="primary-button"/>
+                    </HBox>
+
+                </VBox>
+            </VBox>
+        </ScrollPane>
+    </center>
+
+</BorderPane>
