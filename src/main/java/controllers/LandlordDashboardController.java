@@ -43,6 +43,11 @@ public class LandlordDashboardController {
     }
 
     @FXML
+    public void handleManageListings() {
+        MainApp.switchTo("views/ManageListings.fxml");
+    }
+
+    @FXML
     public void handleLogout() {
         SessionManager.getInstance().logout();
         MainApp.switchTo("views/Login.fxml");
