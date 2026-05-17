@@ -97,7 +97,7 @@ public class PropertyDetailController {
             Parent root = loader.load();
             BookingController controller = loader.getController();
             controller.setRoom(selected, currentProperty);
-            MainApp.getStage().setScene(new Scene(root, 800, 600));
+            MainApp.navigateTo(root);
         } catch (IOException e) {
             errorLabel.setText("Failed to open booking form.");
             e.printStackTrace();

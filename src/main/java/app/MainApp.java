@@ -42,6 +42,10 @@ public class MainApp extends Application {
         }
     }
 
+    public static void navigateTo(Parent root) {
+        primaryStage.getScene().setRoot(root);
+    }
+
     public static Stage getStage() {
         return primaryStage;
     }
