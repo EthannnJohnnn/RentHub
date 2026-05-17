@@ -1,4 +1,94 @@
 package dao;
 
+import models.Booking;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class BookingDAO {
+
+    // CREATE: Add a new booking (Tenant action)
+    public boolean addBooking(Booking booking) {
+        String sql = "INSERT INTO bookings (tenant_id, room_id, status) VALUES (?, ?, ?)";
+        try (Connection conn = DatabaseHelper.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, booking.getTenantId());
+            pstmt.setInt(2, booking.getRoomId());
+            pstmt.setString(3, booking.getStatus()); // Usually "PENDING"
+
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("Error adding booking: " + e.getMessage());
+            return false;
+        }
+    }
+
+    // READ: Find by Tenant (For Tenant Dashboard)
+    public List<Booking> getBookingsByTenantId(int tenantId) {
+        List<Booking> bookings = new ArrayList<>();
+        String sql = "SELECT * FROM bookings WHERE tenant_id = ?";
+        try (Connection conn = DatabaseHelper.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, tenantId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    bookings.add(extractBookingFromResultSet(rs));
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching tenant bookings: " + e.getMessage());
+        }
+        return bookings;
+    }
+
+    // READ: Find by Property (Uses a JOIN to link Rooms to Properties)
+    public List<Booking> getBookingsByPropertyId(int propertyId) {
+        List<Booking> bookings = new ArrayList<>();
+        String sql = "SELECT b.* FROM bookings b JOIN rooms r ON b.room_id = r.id WHERE r.property_id = ?";
+        try (Connection conn = DatabaseHelper.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, propertyId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    bookings.add(extractBookingFromResultSet(rs));
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching property bookings: " + e.getMessage());
+        }
+        return bookings;
+    }
+
+    // UPDATE: Change status to APPROVED or REJECTED (Landlord action)
+    public boolean updateStatus(int bookingId, String status) {
+        String sql = "UPDATE bookings SET status = ? WHERE id = ?";
+        try (Connection conn = DatabaseHelper.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, status);
+            pstmt.setInt(2, bookingId);
+
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("Error updating booking status: " + e.getMessage());
+            return false;
+        }
+    }
+
+    // HELPER: Convert SQL row to Java Object
+    private Booking extractBookingFromResultSet(ResultSet rs) throws SQLException {
+        Booking booking = new Booking();
+        booking.setId(rs.getInt("id"));
+        booking.setTenantId(rs.getInt("tenant_id"));
+        booking.setRoomId(rs.getInt("room_id"));
+        booking.setStatus(rs.getString("status"));
+        booking.setBookingDate(rs.getString("booking_date"));
+        return booking;
+    }
 }
