@@ -53,6 +53,11 @@ public class TenantDashboardController {
     }
 
     @FXML
+    public void handleBrowseProperties() {
+        MainApp.switchTo("views/PropertyList.fxml");
+    }
+
+    @FXML
     public void handleLogout() {
         SessionManager.getInstance().logout();
         MainApp.switchTo("views/Login.fxml");
