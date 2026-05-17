@@ -85,7 +85,7 @@ public class ManageListingsController {
             Parent root = loader.load();
             AddEditPropertyController controller = loader.getController();
             controller.setProperty(property);
-            MainApp.getStage().setScene(new Scene(root, 800, 600));
+            MainApp.navigateTo(root);
         } catch (IOException e) {
             messageLabel.setText("Failed to open edit screen.");
             e.printStackTrace();
