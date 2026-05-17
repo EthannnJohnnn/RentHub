@@ -13,6 +13,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import models.Property;
 import models.Room;
+import dao.ReviewDAO;
+import models.Review;
+import models.User;
 
 import java.io.IOException;
 import java.util.List;
@@ -48,9 +51,18 @@ public class PropertyDetailController {
                 property.getDescription() != null ? property.getDescription() : "No description provided.");
 
         loadRooms();
+        loadReviews();
         ratingComboBox.setItems(FXCollections.observableArrayList(1, 2, 3, 4, 5));
-        reviewsListView.setItems(FXCollections.observableArrayList(
-                "Reviews will appear here once ReviewDAO is implemented."));
+    }
+
+    private void loadReviews() {
+        ReviewDAO reviewDAO = new ReviewDAO();
+        List<Review> reviews = reviewDAO.getReviewsByPropertyId(currentProperty.getId());
+        ObservableList<String> items = FXCollections.observableArrayList();
+        for (Review r : reviews) {
+            items.add("⭐ " + r.getRating() + "/5 — " + r.getComment());
+        }
+        reviewsListView.setItems(items);
     }
 
     private void loadRooms() {
@@ -94,7 +106,34 @@ public class PropertyDetailController {
 
     @FXML
     public void handleSubmitReview() {
-        reviewErrorLabel.setText("Reviews will be available once ReviewDAO is implemented.");
+        Integer rating = ratingComboBox.getValue();
+        String comment = commentArea.getText().trim();
+
+        if (rating == null || comment.isEmpty()) {
+            reviewErrorLabel.setText("Please select a rating and write a comment.");
+            return;
+        }
+
+        User tenant = SessionManager.getInstance().getCurrentUser();
+        ReviewDAO reviewDAO = new ReviewDAO();
+
+        Review review = new Review();
+        review.setPropertyId(currentProperty.getId());
+        review.setTenantId(tenant.getId());
+        review.setRating(rating);
+        review.setComment(comment);
+
+        boolean success = reviewDAO.addReview(review);
+
+        if (!success) {
+            reviewErrorLabel.setText("Failed to submit review.");
+            return;
+        }
+
+        reviewErrorLabel.setText("");
+        commentArea.clear();
+        ratingComboBox.setValue(null);
+        loadReviews();
     }
 
     @FXML
