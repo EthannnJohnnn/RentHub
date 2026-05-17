@@ -42,11 +42,11 @@ public class TenantDashboardController {
     }
 
     private void handleSearch(String keyword) {
-        List<Property> filtered = allProperties.stream()
+        filteredProperties = allProperties.stream()
                 .filter(p -> p.getName().toLowerCase().contains(keyword.toLowerCase())
                         || p.getAddress().toLowerCase().contains(keyword.toLowerCase()))
                 .collect(Collectors.toList());
-        populateList(filtered);
+        populateList(filteredProperties);
     }
 
     private void populateList(List<Property> properties) {
