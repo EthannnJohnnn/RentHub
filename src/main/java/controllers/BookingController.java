@@ -57,10 +57,6 @@ public class BookingController {
             return;
         }
 
-        // Mark room as unavailable
-        selectedRoom.setAvailable(false);
-        roomDAO.updateRoom(selectedRoom);
-
         MainApp.switchTo("views/PropertyList.fxml");
     }
 
