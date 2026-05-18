@@ -63,6 +63,11 @@ public class TenantDashboardController {
     }
 
     @FXML
+    public void handleMyBookings() {
+        MainApp.switchTo("views/MyBookings.fxml");
+    }
+
+    @FXML
     public void handlePropertyClick() {
         int index = propertyListView.getSelectionModel().getSelectedIndex();
         if (index >= 0) {
