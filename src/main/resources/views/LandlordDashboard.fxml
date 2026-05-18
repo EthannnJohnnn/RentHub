@@ -9,7 +9,6 @@
             styleClass="page-container"
             stylesheets="@../styles/styles.css">
 
-    <!-- TOP NAV -->
     <top>
         <HBox styleClass="navbar" alignment="CENTER_LEFT" spacing="12">
             <padding><Insets top="14" right="24" bottom="14" left="24"/></padding>
@@ -20,19 +19,20 @@
         </HBox>
     </top>
 
-    <!-- MAIN CONTENT -->
     <center>
         <VBox spacing="24">
             <padding><Insets top="32" right="40" bottom="32" left="40"/></padding>
 
             <!-- Header Row -->
-            <HBox alignment="CENTER_LEFT" spacing="16">
+            <HBox alignment="CENTER_LEFT" spacing="12">
                 <VBox spacing="4" HBox.hgrow="ALWAYS">
                     <Label text="Landlord Dashboard" styleClass="screen-title"/>
-                    <Label text="Manage your property listings and track bookings."
+                    <Label text="Manage your properties, rooms, and booking requests."
                            styleClass="subtitle"/>
                 </VBox>
-                <!-- THE MISSING BUTTON -->
+                <Button text="Booking Requests"
+                        onAction="#handleBookingRequests"
+                        styleClass="secondary-button"/>
                 <Button text="Manage Listings"
                         onAction="#handleManageListings"
                         styleClass="primary-button"/>
@@ -41,11 +41,16 @@
                         styleClass="secondary-button"/>
             </HBox>
 
-            <!-- My Listings Preview Card -->
+            <!-- My Listings Preview -->
             <VBox styleClass="card" spacing="16">
-                <Label text="MY LISTINGS PREVIEW" styleClass="label-text"/>
+                <HBox alignment="CENTER_LEFT">
+                    <Label text="MY LISTINGS PREVIEW" styleClass="label-text"
+                           HBox.hgrow="ALWAYS"/>
+                    <Label text="Click Manage Listings for full controls"
+                           styleClass="subtitle"/>
+                </HBox>
                 <ListView fx:id="listingsView"
-                          prefHeight="300"
+                          prefHeight="280"
                           styleClass="list-view"/>
             </VBox>
 
