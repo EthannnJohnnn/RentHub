@@ -95,4 +95,17 @@ public class BookingDAO {
         booking.setBookingDate(rs.getString("booking_date"));
         return booking;
     }
+    // NEW HELPER: Re-opens a room if a landlord rejects/cancels a booking
+    public boolean restoreRoomAvailability(int roomId) {
+        String sql = "UPDATE rooms SET is_available = 1 WHERE id = ?";
+        try (Connection conn = DatabaseHelper.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, roomId);
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("Error restoring room availability: " + e.getMessage());
+            return false;
+        }
+    }
 }
