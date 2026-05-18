@@ -91,4 +91,8 @@ public class BookingDAO {
         booking.setBookingDate(rs.getString("booking_date"));
         return booking;
     }
+    // NEW HELPER: Re-opens a room if a landlord rejects/cancels a booking
+    public boolean restoreRoomAvailability(int roomId) {
+
+    }
 }
