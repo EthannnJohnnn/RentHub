@@ -68,7 +68,7 @@ public class ManageRoomsController {
 
                 editBtn.setOnAction(e -> {
                     Room selected = getTableView().getItems().get(getIndex());
-                    startEdit(selected);
+                    ManageRoomsController.this.startEdit(selected);
                 });
 
                 deleteBtn.setOnAction(e -> {
