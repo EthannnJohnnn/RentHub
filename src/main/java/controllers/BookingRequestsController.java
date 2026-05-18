@@ -1,25 +1,138 @@
 package controllers;
 
 import app.MainApp;
+import dao.BookingDAO;
+import dao.PropertyDAO;
+import dao.RoomDAO;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.HBox;
+import models.Booking;
+import models.Property;
+import models.Room;
+import models.User;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BookingRequestsController {
 
-    @FXML private TableView bookingsTable;
-    @FXML private TableColumn tenantColumn;
-    @FXML private TableColumn propertyColumn;
-    @FXML private TableColumn roomColumn;
-    @FXML private TableColumn dateColumn;
-    @FXML private TableColumn statusColumn;
-    @FXML private TableColumn actionsColumn;
+    @FXML private TableView<BookingRequestRow> bookingsTable;
+    @FXML private TableColumn<BookingRequestRow, String> tenantColumn;
+    @FXML private TableColumn<BookingRequestRow, String> propertyColumn;
+    @FXML private TableColumn<BookingRequestRow, String> roomColumn;
+    @FXML private TableColumn<BookingRequestRow, String> dateColumn;
+    @FXML private TableColumn<BookingRequestRow, String> statusColumn;
+    @FXML private TableColumn<BookingRequestRow, String> actionsColumn;
     @FXML private Label requestCountLabel;
     @FXML private Label messageLabel;
 
+    private final BookingDAO bookingDAO = new BookingDAO();
+    private final PropertyDAO propertyDAO = new PropertyDAO();
+    private final RoomDAO roomDAO = new RoomDAO();
+
     @FXML
-    public void initialize() {}
+    public void initialize() {
+        if (!SessionManager.getInstance().isLoggedIn()) {
+            MainApp.switchTo("views/Login.fxml");
+            return;
+        }
+
+        tenantColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().tenantLabel));
+        propertyColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().propertyLabel));
+        roomColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().roomLabel));
+        dateColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().bookingDate));
+        statusColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().status));
+
+        actionsColumn.setCellFactory(col -> new TableCell<>() {
+            private final Button approveBtn = new Button("Approve");
+            private final Button rejectBtn = new Button("Reject");
+            private final HBox box = new HBox(8, approveBtn, rejectBtn);
+
+            {
+                approveBtn.getStyleClass().add("success-button");
+                rejectBtn.getStyleClass().add("danger-button");
+
+                approveBtn.setOnAction(e -> {
+                    BookingRequestRow row = getTableView().getItems().get(getIndex());
+                    updateStatus(row, "APPROVED");
+                });
+
+                rejectBtn.setOnAction(e -> {
+                    BookingRequestRow row = getTableView().getItems().get(getIndex());
+                    updateStatus(row, "REJECTED");
+                });
+            }
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                setGraphic(empty ? null : box);
+            }
+        });
+
+        loadRequests();
+    }
+
+    private void loadRequests() {
+        User user = SessionManager.getInstance().getCurrentUser();
+        List<Property> properties = propertyDAO.getPropertiesByLandlordId(user.getId());
+        List<BookingRequestRow> rows = new ArrayList<>();
+
+        for (Property property : properties) {
+            List<Booking> bookings = bookingDAO.getBookingsByPropertyId(property.getId());
+            for (Booking booking : bookings) {
+                String tenantLabel = "Tenant #" + booking.getTenantId();
+                String roomLabel = "Room #" + booking.getRoomId();
+
+                // Requires RoomDAO.getRoomById(int) (backend task)
+                // Room room = roomDAO.getRoomById(booking.getRoomId());
+                // if (room != null) {
+                //     roomLabel = room.getRoomNumber();
+                // }
+
+                rows.add(new BookingRequestRow(
+                        booking,
+                        tenantLabel,
+                        property.getName(),
+                        roomLabel,
+                        booking.getBookingDate(),
+                        booking.getStatus()
+                ));
+            }
+        }
+
+        bookingsTable.setItems(FXCollections.observableArrayList(rows));
+
+        long pendingCount = rows.stream()
+                .filter(r -> "PENDING".equalsIgnoreCase(r.status))
+                .count();
+        requestCountLabel.setText(pendingCount + " pending requests");
+    }
+
+    private void updateStatus(BookingRequestRow row, String status) {
+        boolean success = bookingDAO.updateStatus(row.booking.getId(), status);
+        if (!success) {
+            messageLabel.setText("Failed to update booking status.");
+            return;
+        }
+
+        // Requires RoomDAO.getRoomById(int) (backend task)
+        // Room room = roomDAO.getRoomById(row.booking.getRoomId());
+        // if (room != null) {
+        //     room.setAvailable("REJECTED".equals(status));
+        //     roomDAO.updateRoom(room);
+        // }
+
+        messageLabel.setText("");
+        loadRequests();
+    }
 
     @FXML
     public void handleBackToDashboard() {
@@ -30,5 +143,28 @@ public class BookingRequestsController {
     public void handleLogout() {
         SessionManager.getInstance().logout();
         MainApp.switchTo("views/Login.fxml");
+    }
+
+    private static class BookingRequestRow {
+        private final Booking booking;
+        private final String tenantLabel;
+        private final String propertyLabel;
+        private final String roomLabel;
+        private final String bookingDate;
+        private final String status;
+
+        private BookingRequestRow(Booking booking,
+                                  String tenantLabel,
+                                  String propertyLabel,
+                                  String roomLabel,
+                                  String bookingDate,
+                                  String status) {
+            this.booking = booking;
+            this.tenantLabel = tenantLabel;
+            this.propertyLabel = propertyLabel;
+            this.roomLabel = roomLabel;
+            this.bookingDate = bookingDate;
+            this.status = status;
+        }
     }
 }
