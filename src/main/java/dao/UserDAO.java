@@ -20,22 +20,22 @@ public class UserDAO {
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, username);
-            pstmt.setString(2, password);
+            // NEW: Scramble their login attempt to compare with the database
+            pstmt.setString(2, hashPassword(password));
             ResultSet rs = pstmt.executeQuery();
 
-            // If a match is found, create the User object and hand it to Person C
             if (rs.next()) {
                 return new User(
                         rs.getInt("id"),
                         rs.getString("username"),
-                        rs.getString("password"),
+                        rs.getString("password"), // This is now a hash, which is safe to hold in memory
                         rs.getString("role")
                 );
             }
         } catch (SQLException e) {
             System.err.println("Login error: " + e.getMessage());
         }
-        return null; // Return null if login fails
+        return null;
     }
 
     // --- REGISTER METHOD ---
