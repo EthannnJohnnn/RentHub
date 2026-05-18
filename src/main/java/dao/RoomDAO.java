@@ -81,7 +81,7 @@ public class RoomDAO {
         }
     }
 
-    // READ: Get a single specific room by its ID (Required for Booking Data tables
+    // READ: Get a single specific room by its ID (Required for Booking Data tables)
     public Room getRoomById(int roomId) {
         String sql = "SELECT * FROM rooms WHERE id = ?";
         try (Connection conn = DatabaseHelper.getConnection();
