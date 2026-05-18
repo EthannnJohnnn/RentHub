@@ -1,5 +1,5 @@
-INSERT INTO users (username, password, role) VALUES ('tenant1', 'pass123', 'TENANT');
-INSERT INTO users (username, password, role) VALUES ('landlord1', 'pass123', 'LANDLORD');
+INSERT INTO users (username, password, role) VALUES ('tenant1', 'pmWkWSBCL51BfikkRV19pbMi/15eN6tVv3Xw6T1e+uY=', 'TENANT');
+INSERT INTO users (username, password, role) VALUES ('landlord1', 'pmWkWSBCL51BfikkRV19pbMi/15eN6tVv3Xw6T1e+uY=', 'LANDLORD');
 
 INSERT INTO properties (landlord_id, name, address, description) VALUES (2, 'Sunset Boarding House', '123 Main St, Labangon', 'Quiet and affordable boarding house.');
 INSERT INTO properties (landlord_id, name, address, description) VALUES (2, 'Downtown Apartments', '456 City Center, Cebu', 'Premium apartments near the university.');
