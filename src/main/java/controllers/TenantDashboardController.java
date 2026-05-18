@@ -25,6 +25,7 @@ public class TenantDashboardController {
 
     private final PropertyDAO propertyDAO = new PropertyDAO();
     private List<Property> allProperties;
+    private List<Property> filteredProperties;
 
     @FXML
     public void initialize() {
@@ -34,17 +35,18 @@ public class TenantDashboardController {
         }
 
         allProperties = propertyDAO.getAllProperties();
-        populateList(allProperties);
+        filteredProperties = allProperties;
+        populateList(filteredProperties);
 
         searchField.textProperty().addListener((obs, oldVal, newVal) -> handleSearch(newVal));
     }
 
     private void handleSearch(String keyword) {
-        List<Property> filtered = allProperties.stream()
+        filteredProperties = allProperties.stream()
                 .filter(p -> p.getName().toLowerCase().contains(keyword.toLowerCase())
                         || p.getAddress().toLowerCase().contains(keyword.toLowerCase()))
                 .collect(Collectors.toList());
-        populateList(filtered);
+        populateList(filteredProperties);
     }
 
     private void populateList(List<Property> properties) {
@@ -64,7 +66,7 @@ public class TenantDashboardController {
     public void handlePropertyClick() {
         int index = propertyListView.getSelectionModel().getSelectedIndex();
         if (index >= 0) {
-            Property selected = allProperties.get(index);
+            Property selected = filteredProperties.get(index);
             try {
                 FXMLLoader loader = new FXMLLoader(
                         MainApp.class.getResource("/views/PropertyDetail.fxml"));
