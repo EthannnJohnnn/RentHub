@@ -39,19 +39,27 @@ public class ManageListingsController {
 
         actionsColumn.setCellFactory(col -> new TableCell<>() {
             private final Button editBtn = new Button("Edit");
+            private final Button roomsBtn = new Button("Rooms");
             private final Button deleteBtn = new Button("Delete");
             private final javafx.scene.layout.HBox box =
-                    new javafx.scene.layout.HBox(8, editBtn, deleteBtn);
+                    new javafx.scene.layout.HBox(6, editBtn, roomsBtn, deleteBtn);
 
             {
                 editBtn.setStyle("-fx-background-color: #4A9EFF; -fx-text-fill: white; " +
-                        "-fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 12px;");
+                        "-fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 11px; -fx-padding: 4 10 4 10;");
+                roomsBtn.setStyle("-fx-background-color: #10B981; -fx-text-fill: white; " +
+                        "-fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 11px; -fx-padding: 4 10 4 10;");
                 deleteBtn.setStyle("-fx-background-color: #EF4444; -fx-text-fill: white; " +
-                        "-fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 12px;");
+                        "-fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 11px; -fx-padding: 4 10 4 10;");
 
                 editBtn.setOnAction(e -> {
                     Property selected = getTableView().getItems().get(getIndex());
                     navigateToEdit(selected);
+                });
+
+                roomsBtn.setOnAction(e -> {
+                    Property selected = getTableView().getItems().get(getIndex());
+                    navigateToRooms(selected);
                 });
 
                 deleteBtn.setOnAction(e -> {
@@ -88,6 +96,20 @@ public class ManageListingsController {
             MainApp.navigateTo(root);
         } catch (IOException e) {
             messageLabel.setText("Failed to open edit screen.");
+            e.printStackTrace();
+        }
+    }
+
+    private void navigateToRooms(Property property) {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    MainApp.class.getResource("/views/ManageRooms.fxml"));
+            Parent root = loader.load();
+            ManageRoomsController controller = loader.getController();
+            controller.setProperty(property);
+            MainApp.navigateTo(root);
+        } catch (IOException e) {
+            messageLabel.setText("Failed to open room management screen.");
             e.printStackTrace();
         }
     }

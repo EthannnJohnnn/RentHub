@@ -4,6 +4,7 @@ import app.MainApp;
 import dao.PropertyDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -51,5 +52,10 @@ public class LandlordDashboardController {
     public void handleLogout() {
         SessionManager.getInstance().logout();
         MainApp.switchTo("views/Login.fxml");
+    }
+
+    @FXML
+    public void handleBookingRequests() {
+        MainApp.switchTo("views/BookingRequests.fxml");
     }
 }
