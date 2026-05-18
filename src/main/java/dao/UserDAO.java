@@ -6,6 +6,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
+
 public class UserDAO {
 
     // --- LOGIN METHOD ---
@@ -51,6 +55,17 @@ public class UserDAO {
         } catch (SQLException e) {
             System.err.println("Registration error: " + e.getMessage());
             return false;
+        }
+    }
+
+    // --- SECURITY HELPER: Hash Passwords (SHA-256) ---
+    private String hashPassword(String plainTextPassword) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(plainTextPassword.getBytes());
+            return Base64.getEncoder().encodeToString(hash);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Failed to hash password", e);
         }
     }
 }
