@@ -100,6 +100,20 @@ public class ManageListingsController {
         }
     }
 
+    private void navigateToRooms(Property property) {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    MainApp.class.getResource("/views/ManageRooms.fxml"));
+            Parent root = loader.load();
+            ManageRoomsController controller = loader.getController();
+            controller.setProperty(property);
+            MainApp.navigateTo(root);
+        } catch (IOException e) {
+            messageLabel.setText("Failed to open room management screen.");
+            e.printStackTrace();
+        }
+    }
+
     private void handleDelete(Property property) {
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
         confirm.setTitle("Delete Property");
