@@ -11,14 +11,18 @@ import java.util.List;
 public class BookingDAO {
 
     // CREATE: Add a new booking (Tenant action)
+    // NOTE: A "PENDING" status does NOT lock the room.
+    // The room is only marked as unavailable when the landlord explicitly APPROVES the booking.
     public boolean addBooking(Booking booking) {
-        String sql = "INSERT INTO bookings (tenant_id, room_id, status) VALUES (?, ?, ?)";
+        // ADDED: booking_date to the SQL string and the 4th parameter (?)
+        String sql = "INSERT INTO bookings (tenant_id, room_id, status, booking_date) VALUES (?, ?, ?, ?)";
         try (Connection conn = DatabaseHelper.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, booking.getTenantId());
             pstmt.setInt(2, booking.getRoomId());
             pstmt.setString(3, booking.getStatus()); // Usually "PENDING"
+            pstmt.setString(4, booking.getBookingDate()); // ADDED: Actually bind the date!
 
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
