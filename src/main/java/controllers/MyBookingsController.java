@@ -1,23 +1,94 @@
 package controllers;
 
 import app.MainApp;
+import dao.BookingDAO;
+import dao.PropertyDAO;
+import dao.RoomDAO;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import models.Booking;
+import models.Property;
+import models.Room;
+import models.User;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MyBookingsController {
 
-    @FXML private TableView bookingsTable;
-    @FXML private TableColumn propertyColumn;
-    @FXML private TableColumn roomColumn;
-    @FXML private TableColumn priceColumn;
-    @FXML private TableColumn dateColumn;
-    @FXML private TableColumn statusColumn;
+    @FXML private TableView<MyBookingRow> bookingsTable;
+    @FXML private TableColumn<MyBookingRow, String> propertyColumn;
+    @FXML private TableColumn<MyBookingRow, String> roomColumn;
+    @FXML private TableColumn<MyBookingRow, String> priceColumn;
+    @FXML private TableColumn<MyBookingRow, String> dateColumn;
+    @FXML private TableColumn<MyBookingRow, String> statusColumn;
     @FXML private Label bookingCountLabel;
 
+    private final BookingDAO bookingDAO = new BookingDAO();
+    private final RoomDAO roomDAO = new RoomDAO();
+    private final PropertyDAO propertyDAO = new PropertyDAO();
+
     @FXML
-    public void initialize() {}
+    public void initialize() {
+        if (!SessionManager.getInstance().isLoggedIn()) {
+            MainApp.switchTo("views/Login.fxml");
+            return;
+        }
+
+        propertyColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().propertyLabel));
+        roomColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().roomLabel));
+        priceColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().priceLabel));
+        dateColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().bookingDate));
+        statusColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().status));
+
+        loadBookings();
+    }
+
+    private void loadBookings() {
+        User user = SessionManager.getInstance().getCurrentUser();
+        List<Booking> bookings = bookingDAO.getBookingsByTenantId(user.getId());
+
+        List<Property> properties = propertyDAO.getAllProperties();
+        Map<Integer, String> propertyNameById = new HashMap<>();
+        for (Property p : properties) {
+            propertyNameById.put(p.getId(), p.getName());
+        }
+
+        List<MyBookingRow> rows = new ArrayList<>();
+        for (Booking booking : bookings) {
+            String roomLabel = "Room #" + booking.getRoomId();
+            String priceLabel = "—";
+            String propertyLabel = "Property";
+
+            // Requires RoomDAO.getRoomById(int) (backend task)
+            // Room room = roomDAO.getRoomById(booking.getRoomId());
+            // if (room != null) {
+            //     roomLabel = room.getRoomNumber();
+            //     priceLabel = "₱" + String.format("%.2f", room.getPrice());
+            //     propertyLabel = propertyNameById.getOrDefault(
+            //             room.getPropertyId(),
+            //             "Property #" + room.getPropertyId()
+            //     );
+            // }
+
+            rows.add(new MyBookingRow(
+                    propertyLabel,
+                    roomLabel,
+                    priceLabel,
+                    booking.getBookingDate(),
+                    booking.getStatus()
+            ));
+        }
+
+        bookingsTable.setItems(FXCollections.observableArrayList(rows));
+        bookingCountLabel.setText(rows.size() + " bookings");
+    }
 
     @FXML
     public void handleBackToDashboard() {
@@ -28,5 +99,25 @@ public class MyBookingsController {
     public void handleLogout() {
         SessionManager.getInstance().logout();
         MainApp.switchTo("views/Login.fxml");
+    }
+
+    private static class MyBookingRow {
+        private final String propertyLabel;
+        private final String roomLabel;
+        private final String priceLabel;
+        private final String bookingDate;
+        private final String status;
+
+        private MyBookingRow(String propertyLabel,
+                             String roomLabel,
+                             String priceLabel,
+                             String bookingDate,
+                             String status) {
+            this.propertyLabel = propertyLabel;
+            this.roomLabel = roomLabel;
+            this.priceLabel = priceLabel;
+            this.bookingDate = bookingDate;
+            this.status = status;
+        }
     }
 }
