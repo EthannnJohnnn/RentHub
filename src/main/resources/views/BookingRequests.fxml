@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.BookingRequestsController"
+            styleClass="page-container"
+            stylesheets="@../styles/styles.css">
+
+    <!-- TOP NAV -->
+    <top>
+        <HBox styleClass="navbar" alignment="CENTER_LEFT" spacing="16">
+            <padding><Insets top="14" right="24" bottom="14" left="24"/></padding>
+            <Label text="Renta" styleClass="nav-brand"/>
+            <Label text="|" styleClass="nav-title" opacity="0.3"/>
+            <Label text="Booking Requests" styleClass="nav-title"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="← Dashboard" onAction="#handleBackToDashboard"
+                    styleClass="secondary-button"/>
+            <Button text="Logout" onAction="#handleLogout"
+                    styleClass="danger-button"/>
+        </HBox>
+    </top>
+
+    <!-- MAIN CONTENT -->
+    <center>
+        <VBox spacing="24">
+            <padding><Insets top="32" right="40" bottom="32" left="40"/></padding>
+
+            <!-- Page Header -->
+            <HBox alignment="CENTER_LEFT" spacing="16">
+                <VBox spacing="4" HBox.hgrow="ALWAYS">
+                    <Label text="Booking Requests" styleClass="screen-title"/>
+                    <Label fx:id="requestCountLabel" text="0 pending requests"
+                           styleClass="subtitle"/>
+                </VBox>
+            </HBox>
+
+            <!-- Feedback message -->
+            <Label fx:id="messageLabel" text="" styleClass="error-label" wrapText="true"/>
+
+            <!-- Bookings Table -->
+            <TableView fx:id="bookingsTable" styleClass="table-view" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="tenantColumn" text="Tenant" prefWidth="160"/>
+                    <TableColumn fx:id="propertyColumn" text="Property" prefWidth="180"/>
+                    <TableColumn fx:id="roomColumn" text="Room" prefWidth="100"/>
+                    <TableColumn fx:id="dateColumn" text="Booking Date" prefWidth="140"/>
+                    <TableColumn fx:id="statusColumn" text="Status" prefWidth="120"/>
+                    <TableColumn fx:id="actionsColumn" text="Actions" prefWidth="180"/>
+                </columns>
+                <placeholder>
+                    <Label text="No booking requests yet." styleClass="subtitle"/>
+                </placeholder>
+            </TableView>
+
+        </VBox>
+    </center>
+
+</BorderPane>
