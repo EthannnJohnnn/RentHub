@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.control.cell.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
@@ -10,7 +9,6 @@
             styleClass="page-container"
             stylesheets="@../styles/styles.css">
 
-    <!-- TOP NAV -->
     <top>
         <HBox styleClass="navbar" alignment="CENTER_LEFT" spacing="16">
             <padding><Insets top="14" right="24" bottom="14" left="24"/></padding>
@@ -18,17 +16,17 @@
             <Label text="|" styleClass="nav-title" opacity="0.3"/>
             <Label text="My Properties" styleClass="nav-title"/>
             <Region HBox.hgrow="ALWAYS"/>
-            <Button text="← Dashboard" onAction="#handleBackToDashboard" styleClass="secondary-button"/>
-            <Button text="Logout" onAction="#handleLogout" styleClass="danger-button"/>
+            <Button text="← Dashboard" onAction="#handleBackToDashboard"
+                    styleClass="secondary-button"/>
+            <Button text="Logout" onAction="#handleLogout"
+                    styleClass="danger-button"/>
         </HBox>
     </top>
 
-    <!-- MAIN CONTENT -->
     <center>
         <VBox spacing="24">
             <padding><Insets top="32" right="40" bottom="32" left="40"/></padding>
 
-            <!-- Page Header Row -->
             <HBox alignment="CENTER_LEFT" spacing="16">
                 <VBox spacing="4" HBox.hgrow="ALWAYS">
                     <Label text="Manage Listings" styleClass="screen-title"/>
@@ -40,17 +38,14 @@
                         styleClass="primary-button"/>
             </HBox>
 
-            <!-- Error / success messages -->
             <Label fx:id="messageLabel" text="" styleClass="error-label" wrapText="true"/>
 
-            <!-- Properties Table -->
-            <!-- CORRECT VERSION — no placeholder attribute, only the child element -->
             <TableView fx:id="listingsTable" styleClass="table-view" VBox.vgrow="ALWAYS">
                 <columns>
-                    <TableColumn fx:id="nameColumn" text="Property Name" prefWidth="220"/>
-                    <TableColumn fx:id="addressColumn" text="Address" prefWidth="260"/>
-                    <TableColumn fx:id="descriptionColumn" text="Description" prefWidth="220"/>
-                    <TableColumn fx:id="actionsColumn" text="Actions" prefWidth="160"/>
+                    <TableColumn fx:id="nameColumn" text="Property Name" prefWidth="200"/>
+                    <TableColumn fx:id="addressColumn" text="Address" prefWidth="220"/>
+                    <TableColumn fx:id="descriptionColumn" text="Description" prefWidth="180"/>
+                    <TableColumn fx:id="actionsColumn" text="Actions" prefWidth="260"/>
                 </columns>
                 <placeholder>
                     <Label text="No properties yet. Click '+ Add New Property' to get started."
