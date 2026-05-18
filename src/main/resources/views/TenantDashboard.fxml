@@ -47,7 +47,8 @@
                            maxWidth="Infinity"/>
                 <ListView fx:id="propertyListView"
                           prefHeight="300"
-                          styleClass="list-view"/>
+                          styleClass="list-view"
+                          onMouseClicked="#handlePropertyClick"/>
             </VBox>
 
         </VBox>
