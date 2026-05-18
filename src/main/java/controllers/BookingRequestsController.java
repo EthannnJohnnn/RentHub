@@ -123,12 +123,10 @@ public class BookingRequestsController {
             return;
         }
 
-        // Requires RoomDAO.getRoomById(int) (backend task)
-        // Room room = roomDAO.getRoomById(row.booking.getRoomId());
-        // if (room != null) {
-        //     room.setAvailable("REJECTED".equals(status));
-        //     roomDAO.updateRoom(room);
-        // }
+        // NEW: Auto-restore room availability if the landlord rejects the booking
+        if ("REJECTED".equals(status)) {
+            bookingDAO.restoreRoomAvailability(row.booking.getRoomId());
+        }
 
         messageLabel.setText("");
         loadRequests();
