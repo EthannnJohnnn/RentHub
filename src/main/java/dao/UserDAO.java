@@ -40,17 +40,18 @@ public class UserDAO {
 
     // --- REGISTER METHOD ---
     public boolean register(User user) {
-        String sql = "INSERT INTO users (username, password, role) VALUES (?, ?, ?)"; // No id (Auto Increment)
+        String sql = "INSERT INTO users (username, password, role) VALUES (?, ?, ?)";
 
         try (Connection conn = DatabaseHelper.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, user.getUsername());
-            pstmt.setString(2, user.getPassword());
+            // NEW: Scramble the password before saving it!
+            pstmt.setString(2, hashPassword(user.getPassword()));
             pstmt.setString(3, user.getRole());
 
             pstmt.executeUpdate();
-            return true; // Registration successful
+            return true;
 
         } catch (SQLException e) {
             System.err.println("Registration error: " + e.getMessage());
