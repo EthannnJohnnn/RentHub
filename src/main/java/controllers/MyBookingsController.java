@@ -7,7 +7,10 @@ import dao.RoomDAO;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import models.Booking;
@@ -47,7 +50,35 @@ public class MyBookingsController {
         dateColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().bookingDate));
         statusColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().status));
 
+        // ✅ Status badge renderer
+        statusColumn.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(String status, boolean empty) {
+                super.updateItem(status, empty);
+                if (empty || status == null) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    Label badge = new Label(status.toUpperCase());
+                    badge.getStyleClass().add(getStatusBadgeClass(status));
+                    setGraphic(badge);
+                    setText(null);
+                    setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+                    setAlignment(Pos.CENTER_LEFT);
+                }
+            }
+        });
+
         loadBookings();
+    }
+
+    private String getStatusBadgeClass(String status) {
+        if (status == null) return "badge-pending";
+        return switch (status.toUpperCase()) {
+            case "APPROVED" -> "badge-approved";
+            case "REJECTED" -> "badge-rejected";
+            default -> "badge-pending";
+        };
     }
 
     private void loadBookings() {
